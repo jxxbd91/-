@@ -168,9 +168,59 @@ console.log(b2) // 结果为 false
 ```
 
 ### iterator
+iterator 是一个方法，Array 构造函数的原型上通过 `Symbol.iterator` 指向这个方法。该方法执行的到结果是一个 `Iterator` 对象，通过 `Object.prototype.toString.call(arr[Symbol.iterator])` 得到的结果是 `"object Array Iterator"`。所有的 数组实例都可以直接通过 `Symbol.iterator` 获得 iterator 方法。我们可以通过 iterator 进行数组的遍历。具体代码如下：
+```
+var arr = [1, 2, 3, 4]
+var it = arr[Symbol.iterator]()
+var item = null
+while(!(item = it.next()).done) {
+	console.log(item.value) // 结果： 1, 2, 3, 4
+}
+```
+除了通过`next`方法进行遍历之外，我们还能使用 `for of` 来遍历iterator
+```
+var arr = [1, 2, 3, 4]
+var it = arr[Symbol.iterator]()
+for (var attr of it) {
+	console.log(attr) // 结果：1, 2, 3, 4
+}
+```
+*关于iterator的详细内容参见 [Iterator](https://developer.mozilla.org/en-US/docs/Archive/Web/Iterator) 和 [阮老师博客](http://es6.ruanyifeng.com/#docs/iterator)*
 
-### keys
-
-### values
-
-### entries
+### keys、values、entries
+这三个方法是 es6 中新增的，返回值是一个 iterator。得到 iterator 之后就可以使用 iterator 的遍历方式进行遍历。三个方法略有区别：
+> keys：通过keys方法得到的iterator可以遍历数组的索引值
+```
+var arr = [1, 2, 3, 4]
+var keys = arr.keys()
+for (var attr of keys) {
+	// 输出的是数组的索引值
+	console.log(attr) // 结果：0, 1, 2, 3
+}
+```
+> values：通过values方法得到iterator，可以遍历到一个对象，对象的形式为：`{value: 1}`。键为固定的value，值是对应的数组值。
+```
+var arr = [1, 2, 3, 4]
+var values = arr.values()
+for (var attr of values) {
+	// 输出的是数组的索引值
+	console.log(attr) // 结果：{value: 1}, {value: 2}, {value: 3}, {value: 4}
+}
+// 通过结构的方式
+for (var { value } of values) {
+	// 输出的是数组的索引值
+	console.log(value) // 结果：1, 2, 3, 4
+}
+```
+> entries：通过values方法得到iterator，可以遍历到一个数组，数组的形式为：`[index, value]`。数组的第一项是被遍历数组的索引，数组的第二项是被遍历数组的值。
+```
+for (var attr of [1, 2, 3, 4].entries()) {
+	console.log(attr) // 结果为：[0, 1], [1, 2], [2, 3], [3, 4]
+}
+// 通过解构的方式进行遍历
+for (var [index, value] of [1, 2, 3, 4].entries()){
+	console.log(index) // 结果为 0, 1, 2, 3
+	console.log(value) // 结果为 1, 2, 3, 4
+}
+```
+（完）
