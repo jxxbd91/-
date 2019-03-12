@@ -30,3 +30,12 @@ jQuery.fn = jQuery.prototype = {
 }
 
 jQuery.prototype.init.prototype = jQuery.prototype
+
+
+// extend
+
+
+// jQuery的整体架构
+// 首先声明了jQuery的构造函数、然后为了实现无new方式构建jQuery的实例在jQuery的prototype上添加了init构造函数
+// 同时在jQuery构造函数上和jQuery的prototype上添加了extend方法，这个方法的功能多样，既可以用来扩展jQuery构造函数自身（构造函数上的静态方法）也可以用来扩展第三方对象
+// 通过extend方法在jQuery上添加了几个工具方法
